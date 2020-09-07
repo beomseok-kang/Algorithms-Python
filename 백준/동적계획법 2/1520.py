@@ -1,30 +1,27 @@
-# import sys
+n, m = map(int, input().split())
 
-# m, n = map(int, input().split())
-# graph = []
-# dp = []
+graph = []
+for _ in range(n):
+  graph.append(list(map(int, input().split())))
 
-# for _ in range(m):
-#   graph.append(tuple(map(int, sys.stdin.readline().split())))
-#   dp.append([0]*n)
+dp = [[0] * m for _ in range(n)]
+dp[0][0] = 1
 
-# dp[0][0] = 1
-# dx = [-1, 1, 0, 0]
-# dy = [0, 0, -1, 1]
-# count = 0
+dx = [1, -1, 0, 0]
+dy = [0, 0, 1, -1]
 
-# def find_route(x, y):
-#   global count
-#   if x < 0 or y < 0 or x >= n or y >= m:
-#     return
-#   if x == n-1 and y == m-1:
-#     count += 1
-#   for i in range(4):
-#     nx = x + dx[i]
-#     ny = y + dy[i]
-#     if not (nx < 0 or ny < 0 or nx >= n or ny >= m):
-#       if graph[ny][nx] < graph[y][x]:
-#         find_route(nx, ny)
+for y in range(n):
+  for x in range(m):
+    summary = 0
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if nx < 0 or ny < 0 or nx >= m or ny >= n:
+        continue
+      if graph[y][x] < graph[ny][nx]:
+        summary += dp[ny][nx]
+      if graph[y][x] > graph[ny][nx] and dp[y][x] != 0:
+        dp[ny][nx] = max(dp[y][x], dp[ny][nx])
+    dp[y][x] = max(dp[y][x], summary)
 
-# find_route(0,0)
-# print(count)
+print(dp[n-1][m-1])
