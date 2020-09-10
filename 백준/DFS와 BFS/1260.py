@@ -2,47 +2,39 @@ from collections import deque
 
 n, m, v = map(int, input().split())
 
-edges = []
+graph = [[] for _ in range(n + 1)]
 for i in range(m):
-  edges.append(list(map(int, input().split())))
-edges.sort()
-print(edges)
+  a, b = map(int, input().split())
+  graph[a].append(b)
+  graph[b].append(a)
 
-stack = []
-dfs_visited = [False] * n
+stack = [v]
+dfs_visited = [False] * (n + 1)
 
-def dfs(stack, v, visited):
-  if visited[v-1]:
-    return
-  stack.append(v)
-  visited[v-1] = True
-  print(v, end=" ")
-  for i in edges:
-    if i[0] == v:
-      dfs(stack, i[1], visited)
-    if i[1] == v:
-      dfs(stack, i[0], visited)
+def dfs():
+  while stack:
+    node = stack.pop()
+    if dfs_visited[node] == True:
+      continue
+    print(node, end=" ")
+    dfs_visited[node] = True
+    for edge in sorted(graph[node], reverse=True):
+      stack.append(edge)
 
-dfs(stack, v, dfs_visited)
+dfs()
 print()
 
 queue = deque()
-bfs_visited = [False] * n
+queue.append(v)
+bfs_visited = [False] * (n + 1)
 
-def bfs(queue, v, visited):
-  queue.append(v)
-  visited[v-1] = True
+def bfs():
   while queue:
-    out = queue.popleft()
-    print(out, end=" ")
-    for i in edges:
-      if i[0] == out and visited[i[1]-1] == False:
-        queue.append(i[1])
-        visited[i[1]-1] = True
-      if i[1] == out and visited[i[0]-1] == False:
-        queue.append(i[0])
-        visited[i[0]-1] = True
-
-bfs(queue, v, bfs_visited)
-
-############################ UNSOLVED YET
+    node = queue.popleft()
+    if bfs_visited[node] == True:
+      continue
+    print(node, end=" ")
+    bfs_visited[node] = True
+    for edge in sorted(graph[node]):
+      queue.append(edge)
+bfs()
