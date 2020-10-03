@@ -17,7 +17,7 @@ distance = [INF] * (n + 1)
 for _ in range(m):
   # the cost from node a to node b is cost
   a, b, cost = map(int, input().split())
-  graph[b].append((b, cost))
+  graph[a].append((b, cost))
 
 def dijkstra(start):
   q = []

@@ -25,13 +25,13 @@ def find_parent(parent, x):
 def find_parent_improved(parent, x):
   if parent[x] != x:
     # changes the parent to the root node.
-    parent[x] = find_parent(parent, parent[x])
+    parent[x] = find_parent_improved(parent, parent[x])
   return parent[x]
 
 # 2. union: union two nodes, a and b
 def union_parent(parent, a, b):
-  a = find_parent(parent, a)
-  b = find_parent(parent, b)
+  a = find_parent_improved(parent, a)
+  b = find_parent_improved(parent, b)
   if a < b:
     parent[b] = a
   else:
